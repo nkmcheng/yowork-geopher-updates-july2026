@@ -1,0 +1,8 @@
+# temp screenshots / scratch
+_*.png
+*.tmp
+
+# OS junk
+Thumbs.db
+.DS_Store
+desktop.ini
