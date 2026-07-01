@@ -22,7 +22,9 @@ An HTML presentation covering the latest product updates across **YoWork** and *
 Open `yowork-geopher-update.html` in any modern browser (or `index.html`, which redirects to it). Use the arrow keys or the on-screen dots to navigate; `#n` in the URL jumps to slide _n_.
 
 Also published via GitHub Pages at
-<https://nkmcheng.github.io/yowork-geopher-updates-july2026/>.
+<https://nkmcheng.github.io/yowork-geopher-updates-july2026/>
+
+(Open the root URL; `index.html` redirects to the deck.)
 
 ## Optional: run a local server
 
