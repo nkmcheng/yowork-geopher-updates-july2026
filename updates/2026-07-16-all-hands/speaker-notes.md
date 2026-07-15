@@ -5,7 +5,8 @@ Beats, not a script. One line = one thing to say. ⭐ = the centerpiece.
 ## Slides 1–2 · Open
 
 - Hopefully by now everyone already knows YoWork — but just in case: it's our internal work platform with AI built into it. So it's not just where our tasks, approvals, and e-signatures live — the AI actually helps with the work itself: it drafts things for us, summarizes what's happening, and nudges us so nothing gets forgotten. And today's update is a really good example of that.
-- We're always reminded about the daily snapshot — and for good reason. We're work-from-home, across PH and ID, so the snapshot is how we stay visible to each other.
+- **Bridge:** "Which brings me to the daily snapshot."
+- We're always reminded about it — and for good reason. We're work-from-home, across PH and ID, so the snapshot is how we stay visible to each other.
 - It's how management and our teammates know what we're working on, and how blockers get spotted early.
 - The hard part is writing it: by the end of the day, we've usually forgotten half of what we did.
 - So for this update, we made the snapshot write itself — you just review and approve.
