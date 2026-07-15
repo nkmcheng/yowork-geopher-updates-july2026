@@ -5,8 +5,7 @@ Beats, not a script. One line = one thing to say. ⭐ = the centerpiece.
 ## Slides 1–2 · Open
 
 - Hopefully by now everyone already knows YoWork — but just in case: it's our internal work platform with AI built into it. So it's not just where our tasks, approvals, and e-signatures live — the AI actually helps with the work itself: it drafts things for us, summarizes what's happening, and nudges us so nothing gets forgotten. And today's update is a really good example of that.
-- "Quick show of hands — who's ever been reminded about the daily snapshot?" *(pause, smile)*
-- It comes up at every all-hands, and Kyon has a point — we're a work-from-home company, spread across PH and ID.
+- If there's one thing we hear at every all-hands, it's the reminder about the daily snapshot. And Kyon has a point — we're a work-from-home company, spread across PH and ID.
 - Nobody sees each other at a desk. The snapshot **is** our visibility: it's how management and our own teammates know what we're each working on, how projects are moving, and — most importantly — if someone's stuck or has a blocker, it surfaces early instead of two weeks later.
 - *(optional stat — verify first: H1 completion was only ~21%. If you use it: "and we get it — it's hard.")*
 - But here's the honest part, and I think many of us feel this: it's not that we don't want to submit.
