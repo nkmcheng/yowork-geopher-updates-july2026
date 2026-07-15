@@ -25,8 +25,11 @@ Beats, not a script. One line = one thing to say. ⭐ = the centerpiece.
 - Here's the one I promised at the start.
 - Snapshot now lives in YoWork — and **it remembers your day for you.**
 - It pulls your Lark chats, your meetings, your YoWork activity → drafts the snapshot.
-- You don't write your day from memory anymore. You just check it.
-- *(show the screenshot — "this whole 'Today's achievement' section? Auto-drafted.")*
+- **My yesterday, as proof** *(point at the screenshot — this is my real July 15 snapshot)*:
+  - Yesterday I was heads-down on the compliance training modules, attended the DEV daily standup, and replied to a bunch of threads — including the costing update for the video project in YoWork Request.
+  - At the end of the day, YoWork pinged me — and the draft already had **all of it**. The tasks with ticket numbers, the standup, even that costing reply.
+  - I didn't type any of this "Today's achievement" section. I read it, fixed nothing, hit Approve. Maybe 20 seconds.
+- That's the difference: you don't write your day from memory anymore — you just check it.
 
 ## Slide 6 · Settings
 
