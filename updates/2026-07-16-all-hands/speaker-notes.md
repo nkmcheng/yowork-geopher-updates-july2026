@@ -5,13 +5,10 @@ Beats, not a script. One line = one thing to say. ⭐ = the centerpiece.
 ## Slides 1–2 · Open
 
 - Hopefully by now everyone already knows YoWork — but just in case: it's our internal work platform with AI built into it. So it's not just where our tasks, approvals, and e-signatures live — the AI actually helps with the work itself: it drafts things for us, summarizes what's happening, and nudges us so nothing gets forgotten. And today's update is a really good example of that.
-- If there's one thing we hear at every all-hands, it's the reminder about the daily snapshot. And Kyon has a point — we're a work-from-home company, spread across PH and ID.
-- Nobody sees each other at a desk. The snapshot **is** our visibility: it's how management and our own teammates know what we're each working on, how projects are moving, and — most importantly — if someone's stuck or has a blocker, it surfaces early instead of two weeks later.
-- *(optional stat — verify first: H1 completion was only ~21%. If you use it: "and we get it — it's hard.")*
-- But here's the honest part, and I think many of us feel this: it's not that we don't want to submit.
-- It's that by the end of the day, we've forgotten half of what we did. The day was full, things kept coming in, and now it's 6 PM and we're staring at a blank form trying to reconstruct our own day from memory.
-- So the biggest reason snapshots don't happen isn't laziness — it's memory.
-- That's what today's update is about — we worked on making that part easier, so the snapshot basically writes itself and you just check it.
+- We're always reminded about the daily snapshot — and for good reason. We're work-from-home, across PH and ID, so the snapshot is how we stay visible to each other.
+- It's how management and our teammates know what we're working on, and how blockers get spotted early.
+- The hard part is writing it: by the end of the day, we've usually forgotten half of what we did.
+- So for this update, we made the snapshot write itself — you just review and approve.
 - Plus five more things across YoWork and Geopher. Let's go. *(agenda — flash it, don't read it)*
 
 ## Slide 4 · Mobile
