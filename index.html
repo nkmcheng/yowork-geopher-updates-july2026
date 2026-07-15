@@ -1,14 +1,176 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>YoWork × Geopher — Product Update</title>
-  <meta http-equiv="refresh" content="0; url=yowork-geopher-update.html">
-  <link rel="canonical" href="yowork-geopher-update.html">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YoWork × Geopher — Product Updates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="yoyo-assets/geopher-badge-round.png">
+<style>
+  :root{
+    --bg:#fbfaf8;
+    --panel:#ffffff;
+    --panel-2:#f4f2ec;
+    --border:#e8e4da;
+    --text:#262229;
+    --muted:#7c7a82;
+    --orange:#FF9D00;
+    --orange-2:#FF6A00;
+    --pink:#ec4899;
+    --purple:#8b5cf6;
+    --yowork-grad:linear-gradient(135deg,#FFB81C,#FF9D00,#FF6A00);
+    --geopher-grad:linear-gradient(135deg,#ec4899,#8b5cf6);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+    font-family:"Segoe UI",Helvetica,Arial,sans-serif;line-height:1.55;}
+  body{
+    background-image:radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0);
+    background-size:26px 26px;
+  }
+  h1,h2,h3{font-family:"Montserrat","Segoe UI",sans-serif;margin:0;}
+  a{color:inherit;}
+  a:focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:6px;}
+
+  .wrap{max-width:880px;margin:0 auto;padding:56px 24px 72px;}
+
+  /* ---------- header ---------- */
+  header.site{display:flex;align-items:center;gap:18px;margin-bottom:14px;}
+  header.site img{height:34px;width:auto;}
+  .site-title h1{font-size:30px;font-weight:800;letter-spacing:-.01em;}
+  .site-title p{margin:2px 0 0;color:var(--muted);font-size:15px;}
+  .site-rule{height:4px;border-radius:99px;background:var(--yowork-grad);width:120px;margin:20px 0 44px;}
+
+  /* ---------- timeline ---------- */
+  .timeline{position:relative;padding-left:34px;}
+  .timeline::before{content:"";position:absolute;left:10px;top:8px;bottom:8px;width:2px;
+    background:linear-gradient(to bottom,#FF9D00,#ec4899 60%,transparent);border-radius:2px;}
+  .entry{position:relative;margin-bottom:44px;}
+  .entry::before{content:"";position:absolute;left:-31px;top:26px;width:16px;height:16px;border-radius:50%;
+    background:var(--yowork-grad);box-shadow:0 0 0 4px var(--bg),0 6px 14px rgba(255,138,0,.35);}
+
+  /* ---------- update card ---------- */
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:18px;overflow:hidden;
+    box-shadow:0 10px 30px rgba(38,34,41,.06);}
+  .card-accent{height:4px;background:var(--yowork-grad);}
+  .card-body{padding:26px 30px 28px;}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .eyebrow .dot{width:9px;height:9px;border-radius:50%;background:var(--yowork-grad);}
+  .badge-latest{font-size:11px;font-weight:800;letter-spacing:.1em;color:#fff;background:var(--yowork-grad);
+    padding:3px 9px;border-radius:99px;margin-left:6px;}
+
+  .card-head{display:flex;flex-wrap:wrap;align-items:flex-start;gap:16px;justify-content:space-between;margin-top:10px;}
+  .card-head h2{font-size:23px;font-weight:800;letter-spacing:-.01em;}
+  .card-head .summary{margin:6px 0 0;color:var(--muted);font-size:15px;max-width:52ch;}
+
+  .open-deck{display:inline-flex;align-items:center;gap:9px;background:var(--yowork-grad);color:#fff;
+    font-weight:800;font-size:14.5px;padding:12px 20px;border-radius:12px;text-decoration:none;
+    box-shadow:0 10px 22px rgba(255,138,0,.28);white-space:nowrap;transition:transform .15s ease, box-shadow .15s ease;}
+  .open-deck:hover{transform:translateY(-1px);box-shadow:0 14px 26px rgba(255,138,0,.34);}
+
+  /* ---------- table of contents ---------- */
+  .toc{margin-top:18px;}
+  .toc-group h3{font-size:12.5px;font-weight:800;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);margin:18px 0 6px;display:flex;align-items:center;gap:9px;}
+  .toc-group h3::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--yowork-grad);}
+  .toc-group.geopher h3::before{background:var(--geopher-grad);}
+  .toc a{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:10px;margin:2px 0;
+    text-decoration:none;font-size:15px;font-weight:600;border:1px solid transparent;
+    transition:background .15s ease,border-color .15s ease;}
+  .toc a:hover{background:var(--panel-2);border-color:var(--border);}
+  .toc a .no{flex:none;font-family:"Montserrat",sans-serif;font-size:12px;font-weight:800;color:#fff;
+    background:var(--yowork-grad);border-radius:7px;min-width:24px;height:22px;display:inline-flex;
+    align-items:center;justify-content:center;}
+  .toc-group.geopher a .no{background:var(--geopher-grad);}
+  .toc a .hint{margin-left:auto;color:var(--muted);font-size:12.5px;font-weight:500;white-space:nowrap;}
+
+  /* ---------- footer ---------- */
+  footer{margin-top:10px;padding-top:26px;border-top:1px solid var(--border);color:var(--muted);font-size:14px;
+    display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;}
+  footer a{color:var(--orange-2);font-weight:700;text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+
+  @media (max-width:640px){
+    .wrap{padding-top:36px;}
+    .timeline{padding-left:26px;}
+    .entry::before{left:-25px;}
+    .card-body{padding:20px 18px 22px;}
+    .toc a .hint{display:none;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
 </head>
 <body>
-  <p>Loading the deck… if it doesn't open automatically,
-     <a href="yowork-geopher-update.html">click here</a>.</p>
+<div class="wrap">
+
+  <header class="site">
+    <img src="yoyo-assets/yoyo-logo.webp" alt="YOYO Holdings">
+    <div class="site-title">
+      <h1>Product Updates</h1>
+      <p>YoWork × Geopher — release decks &amp; demos from the YOYO tech team</p>
+    </div>
+  </header>
+  <div class="site-rule" role="presentation"></div>
+
+  <div class="timeline">
+
+    <!-- ============================================================
+         HOW TO ADD A NEW UPDATE
+         1. Put the new deck in its own folder, e.g. updates/2026-08/
+            (host videos externally and reference them by URL to keep
+            the repo light).
+         2. Copy the <article class="entry"> block below, paste it
+            ABOVE the previous update (newest first).
+         3. Move the "LATEST" badge to the new entry, update the date,
+            summary, deck href, and the chapter links (#n = slide n).
+         ============================================================ -->
+
+    <!-- ===== JULY 2026 ===== -->
+    <article class="entry">
+      <div class="card">
+        <div class="card-accent"></div>
+        <div class="card-body">
+          <span class="eyebrow"><span class="dot"></span>July 2026<span class="badge-latest">Latest</span></span>
+          <div class="card-head">
+            <div>
+              <h2>YoWork × Geopher — Product Update</h2>
+              <p class="summary">E-signature upgrades, a redesigned Work Board, the new People-First dashboard, Xendit payments on Geopher, and cleaner brand analytics.</p>
+            </div>
+            <a class="open-deck" href="yowork-geopher-update.html">▶&nbsp; Open the deck</a>
+          </div>
+
+          <nav class="toc" aria-label="July 2026 chapters">
+            <div class="toc-group">
+              <h3>YoWork</h3>
+              <a href="yowork-geopher-update.html#4"><span class="no">4</span>E-Signature — Sign All<span class="hint">one tap, every field</span></a>
+              <a href="yowork-geopher-update.html#5"><span class="no">5</span>E-Signature — Bulk Sign Requests<span class="hint">send to many at once</span></a>
+              <a href="yowork-geopher-update.html#6"><span class="no">6</span>E-Signature — External Signing Links<span class="hint">third-party signers</span></a>
+              <a href="yowork-geopher-update.html#7"><span class="no">7</span>Projects — Work Board<span class="hint">filters, insights &amp; sorting</span></a>
+              <a href="yowork-geopher-update.html#8"><span class="no">8</span>New Dashboard — People-First<span class="hint">workload, presence &amp; morale</span></a>
+            </div>
+            <div class="toc-group geopher">
+              <h3>Geopher</h3>
+              <a href="yowork-geopher-update.html#10"><span class="no">10</span>Xendit Payments<span class="hint">purchase &amp; change plans</span></a>
+              <a href="yowork-geopher-update.html#11"><span class="no">11</span>Brand Relation Tagging &amp; Dedup<span class="hint">cleaner competitive analysis</span></a>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <footer>
+    <span>Question, request, or bug? <a href="https://ai.yoyo-holdings.com/work/intake">ai.yoyo-holdings.com/work/intake</a></span>
+    <span>YOYO Holdings · Tech team</span>
+  </footer>
+
+</div>
 </body>
 </html>
