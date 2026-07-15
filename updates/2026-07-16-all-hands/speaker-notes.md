@@ -4,6 +4,7 @@ Beats, not a script. One line = one thing to say. ⭐ = the centerpiece.
 
 ## Slides 1–2 · Open
 
+- Hopefully by now everyone already knows YoWork — but just in case: it's our own internal workspace, built by us for us. It's where our work lives — tasks and projects, approvals and e-signatures, HR tools like peer feedback and the org chart — one platform instead of scattered tools.
 - "Quick show of hands — who's ever been reminded about the daily snapshot?" *(pause, smile)*
 - It comes up at every all-hands, and Kyon has a point — we're a work-from-home company, spread across PH and ID.
 - Nobody sees each other at a desk. The snapshot **is** our visibility: it's how management and our own teammates know what we're each working on, how projects are moving, and — most importantly — if someone's stuck or has a blocker, it surfaces early instead of two weeks later.
