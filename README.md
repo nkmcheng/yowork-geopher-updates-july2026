@@ -5,7 +5,8 @@ An HTML presentation covering the latest product updates across **YoWork** and *
 ## Contents
 
 - `index.html` — the **updates hub**: one entry per product update, each with its own table of contents deep-linking into the deck's slides
-- `yowork-geopher-update.html` — the single-file slide deck (open directly in a browser)
+- `yowork-geopher-update.html` — the July 2 slide deck (open directly in a browser)
+- `updates/2026-07-16-all-hands/` — the July 16 all-hands deck (mobile responsiveness, Daily Snapshot & settings, Geopher alerts/digest, Xendit live) with its compressed recordings
 - `yoyo-assets/` — logos, mascots, icons, QR code, and screenshots used by the deck
 - `*.mp4` — the seven feature recordings embedded in the deck (720p, web-optimized)
 - `serve-presentation.ps1` — optional local static server (PowerShell)

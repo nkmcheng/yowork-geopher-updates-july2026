@@ -39,6 +39,7 @@
   }
   .slide{
     position:absolute;inset:0;display:none;flex-direction:column;
+    justify-content:center;
     padding:64px 88px 72px 88px;
     opacity:0;transform:translateY(10px);
     transition:opacity .4s ease, transform .4s ease;
@@ -47,6 +48,17 @@
 
   /* corner logo */
   .brand-mark{position:fixed;top:26px;right:38px;height:22px;opacity:.85;z-index:11;}
+
+  /* back to updates hub */
+  .home-link{
+    position:fixed;top:20px;left:26px;z-index:11;
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:700;color:var(--muted);text-decoration:none;
+    background:var(--panel);border:1px solid var(--border);border-radius:999px;
+    padding:8px 16px 8px 12px;box-shadow:0 4px 12px rgba(0,0,0,.06);
+    transition:color .15s,transform .15s;
+  }
+  .home-link:hover{color:var(--orange-2);transform:translateX(-2px);}
 
   .eyebrow{
     display:inline-flex;align-items:center;gap:11px;
@@ -62,11 +74,11 @@
   h2{font-size:40px;margin:0 0 8px 0;font-weight:800;letter-spacing:-.01em;}
   .subtitle{font-size:19px;color:var(--muted);margin:0;font-weight:400;max-width:720px;line-height:1.55;}
 
-  .content-row{display:flex;gap:48px;flex:1;min-height:0;align-items:stretch;margin-top:24px;}
+  .content-row{display:flex;gap:48px;flex:0 1 auto;min-height:0;align-items:center;margin-top:24px;}
   .content-col{flex:0 0 33%;display:flex;flex-direction:column;justify-content:center;min-width:0;}
   .video-col{flex:1 1 auto;display:flex;align-items:center;justify-content:center;min-width:0;}
   .video-frame{
-    width:100%;aspect-ratio:16/9;height:auto;max-height:100%;
+    width:min(100%, calc(62vh * 16 / 9));aspect-ratio:16/9;height:auto;
     border-radius:18px;overflow:hidden;
     border:1px solid var(--border);background:#000;
     box-shadow:0 26px 64px rgba(0,0,0,.20);position:relative;
@@ -246,7 +258,8 @@
   .intake-note{margin-top:26px;font-size:17px;color:var(--muted);}
   .intake-note b{color:var(--orange-2);font-weight:700;}
   /* ===== NAV ===== */
-  .nav{position:fixed;bottom:22px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:16px;z-index:10;}
+  .nav{position:fixed;bottom:22px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:16px;z-index:10;pointer-events:none;}
+  .nav>*{pointer-events:auto;}
   .nav button{background:var(--panel);border:1px solid var(--border);color:var(--text);width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s;box-shadow:0 4px 12px rgba(0,0,0,.06);}
   .nav button:hover:not(:disabled){background:var(--panel-2);transform:scale(1.06);}
   .nav button:disabled{opacity:.35;cursor:default;}
@@ -254,6 +267,14 @@
   .dots span{width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .15s,transform .15s;}
   .dots span.active{background:var(--orange);transform:scale(1.35);}
   .counter{position:fixed;bottom:28px;right:36px;font-size:13px;color:var(--muted);z-index:10;font-variant-numeric:tabular-nums;}
+  .home-btn{
+    position:fixed;bottom:22px;right:96px;z-index:11;
+    background:var(--panel);border:1px solid var(--border);color:var(--text);
+    width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:17px;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s,transform .15s;box-shadow:0 4px 12px rgba(0,0,0,.06);
+  }
+  .home-btn:hover{background:var(--panel-2);transform:scale(1.06);}
   .progress-bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,#FFB81C,#FF9D00,#FF6A00,#ec4899);z-index:12;transition:width .4s ease;}
 </style>
 </head>
@@ -275,6 +296,7 @@
 </svg>
 
 <div class="progress-bar" id="progressBar"></div>
+<a class="home-link" href="./">‹ All updates</a>
 <img class="brand-mark" src="yoyo-assets/yoyo-logo.webp" alt="YOYO">
 <div class="deck" id="deck">
 
@@ -532,6 +554,7 @@
 
 </div>
 
+<button class="home-btn" id="homeBtn" aria-label="Back to first slide" title="Back to first slide">⌂</button>
 <div class="counter" id="counter">1 / 12</div>
 <div class="nav">
   <button id="prevBtn" aria-label="Previous">‹</button>
@@ -589,6 +612,7 @@
   }
   prevBtn.addEventListener('click', () => goTo(current - 1));
   nextBtn.addEventListener('click', () => goTo(current + 1));
+  document.getElementById('homeBtn').addEventListener('click', () => goTo(0));
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { goTo(current + 1); e.preventDefault(); }
     if (e.key === 'ArrowLeft' || e.key === 'PageUp') { goTo(current - 1); e.preventDefault(); }

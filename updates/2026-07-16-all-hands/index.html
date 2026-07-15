@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YoWork Goes Mobile &amp; Snapshots Move In-App — All-Hands · July 16, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="../../yoyo-assets/geopher-badge-round.png">
+<style>
+  :root{
+    --bg:#fbfaf8;
+    --panel:#ffffff;
+    --panel-2:#f4f2ec;
+    --border:#e8e4da;
+    --text:#262229;
+    --muted:#7c7a82;
+    --orange:#FF9D00;
+    --orange-2:#FF6A00;
+    --orange-light:#FFB81C;
+    --pink:#ec4899;
+    --purple:#8b5cf6;
+    --green:#28c76f;
+    --yowork-grad:linear-gradient(135deg,#FFB81C,#FF9D00,#FF6A00);
+    --geopher-grad:linear-gradient(135deg,#ec4899,#8b5cf6);
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;height:100%;min-height:100vh;min-height:100dvh;
+    background:var(--bg);color:var(--text);
+    font-family:"Segoe UI",Helvetica,Arial,sans-serif;
+    overflow:hidden;
+  }
+  h1,h2,h3{font-family:"Montserrat","Segoe UI",sans-serif;}
+  .deck{
+    position:relative;height:100vh;height:100dvh;width:100vw;
+    background-image:radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0);
+    background-size:26px 26px;
+  }
+  .slide{
+    position:absolute;inset:0;display:none;flex-direction:column;
+    justify-content:center;
+    padding:64px 88px 72px 88px;
+    opacity:0;transform:translateY(10px);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  .slide.active{display:flex;opacity:1;transform:translateY(0);}
+
+  /* corner logo */
+  .brand-mark{position:fixed;top:26px;right:38px;height:22px;opacity:.85;z-index:11;}
+
+  /* back to updates hub */
+  .home-link{
+    position:fixed;top:20px;left:26px;z-index:11;
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:700;color:var(--muted);text-decoration:none;
+    background:var(--panel);border:1px solid var(--border);border-radius:999px;
+    padding:8px 16px 8px 12px;box-shadow:0 4px 12px rgba(0,0,0,.06);
+    transition:color .15s,transform .15s;
+  }
+  .home-link:hover{color:var(--orange-2);transform:translateX(-2px);}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:11px;
+    font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:16px;
+  }
+  .eyebrow .dot{width:9px;height:9px;border-radius:50%;background:var(--yowork-grad);}
+  .eyebrow.geopher .dot{background:var(--geopher-grad);}
+  .eyebrow .ava{width:34px;height:34px;border-radius:50%;overflow:hidden;background:var(--panel-2);display:flex;}
+  .eyebrow .ava img{width:100%;height:100%;object-fit:cover;}
+
+  h1{font-size:52px;margin:0 0 10px 0;font-weight:800;letter-spacing:-.02em;line-height:1.05;}
+  h2{font-size:40px;margin:0 0 8px 0;font-weight:800;letter-spacing:-.01em;}
+  .subtitle{font-size:19px;color:var(--muted);margin:0;font-weight:400;max-width:720px;line-height:1.55;}
+
+  .content-row{display:flex;gap:48px;flex:0 1 auto;min-height:0;align-items:center;margin-top:24px;}
+  .content-col{flex:0 0 33%;display:flex;flex-direction:column;justify-content:center;min-width:0;}
+  .content-col.wide{flex:0 0 42%;}
+  .video-col{flex:1 1 auto;display:flex;align-items:center;justify-content:center;min-width:0;}
+  .video-frame{
+    width:min(100%, calc(62vh * 16 / 9));aspect-ratio:16/9;height:auto;
+    border-radius:18px;overflow:hidden;
+    border:1px solid var(--border);background:#000;
+    box-shadow:0 26px 64px rgba(0,0,0,.20);position:relative;
+  }
+  .video-frame::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--yowork-grad);z-index:3;}
+  .geopher-slide .video-frame::before{background:var(--geopher-grad);}
+  video{width:100%;height:100%;display:block;object-fit:cover;background:#000;}
+
+  /* video placeholder — swap for a real <video> when the recording is hosted */
+  .video-frame.placeholder{
+    background:var(--panel);border:2px dashed var(--border);box-shadow:none;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .video-frame.placeholder::before{display:none;}
+  .ph-label{display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--muted);font-size:15px;font-weight:600;text-align:center;padding:20px;}
+  .ph-label .icon-orb{width:52px;height:52px;opacity:.85;}
+
+  /* portrait phone frame (mobile-responsiveness slide) */
+  .phone-frame{
+    height:min(66vh, 820px);aspect-ratio:626/1112;
+    border-radius:30px;border:10px solid #1d1a20;background:#000;
+    box-shadow:0 26px 64px rgba(0,0,0,.25);overflow:hidden;position:relative;flex:none;
+  }
+  .phone-frame video{width:100%;height:100%;object-fit:cover;}
+  /* framed screenshots */
+  .shot-duo,.shot-solo{flex:1 1 auto;display:flex;gap:16px;align-items:center;justify-content:center;min-width:0;}
+  .shot{
+    flex:1;min-width:0;border-radius:14px;overflow:hidden;
+    border:1px solid var(--border);background:#fff;
+    box-shadow:0 22px 54px rgba(0,0,0,.16);position:relative;
+  }
+  .shot::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--yowork-grad);z-index:3;}
+  .shot img{display:block;width:100%;height:auto;}
+  .shot-duo .shot:nth-child(2){margin-top:56px;}
+  .shot-solo .shot{flex:none;}
+  .shot-solo .shot img{width:auto;max-width:100%;max-height:68vh;}
+  .phone-frame.placeholder{background:var(--panel);border-color:var(--border);border-style:dashed;border-width:2px;border-radius:38px;box-shadow:none;display:flex;align-items:center;justify-content:center;}
+  .phone-frame.placeholder::after{display:none;}
+
+  /* numbered feature list */
+  ul.feature-list{list-style:none;margin:22px 0 0 0;padding:0;display:flex;flex-direction:column;gap:20px;}
+  ul.feature-list li{display:flex;gap:16px;font-size:18px;line-height:1.55;color:var(--text);}
+  ul.feature-list li .bullet{
+    flex:none;width:30px;height:30px;border-radius:9px;background:var(--yowork-grad);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;margin-top:1px;
+    box-shadow:0 6px 14px rgba(255,138,0,.28);
+  }
+  .geopher-slide ul.feature-list li .bullet{background:var(--geopher-grad);box-shadow:0 6px 14px rgba(236,72,153,.28);}
+  ul.feature-list li b{color:#141118;font-weight:700;}
+
+  .tag-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px;}
+  .tag{
+    font-size:12.5px;padding:7px 14px;border-radius:999px;border:1px solid var(--border);
+    background:var(--panel);color:var(--muted);font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.03);
+  }
+
+  /* icon orb */
+  .icon-orb{display:flex;align-items:center;justify-content:center;border-radius:50%;flex:none;box-shadow:0 12px 26px rgba(0,0,0,.10);}
+  .icon-orb.orange{background:var(--yowork-grad);}
+  .icon-orb.pink{background:var(--geopher-grad);}
+  .icon-orb.green{background:linear-gradient(135deg,#3ddc84,#28c76f);}
+  .ic{width:52%;height:52%;display:block;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* animations */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(var(--r,0deg));}50%{transform:translateY(-14px) rotate(var(--r,0deg));}}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+  @keyframes pulseDot{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.25);opacity:.6;}}
+  @keyframes wavehand{0%,100%{transform:rotate(0deg);}25%{transform:rotate(-11deg);}75%{transform:rotate(9deg);}}
+  .slide.active h1,.slide.active h2,.slide.active .subtitle,.slide.active .eyebrow,.slide.active .title-meta,.slide.active .tag-row,.slide.active .closing-logo{animation:fadeUp .55s ease both;}
+  .slide.active .subtitle{animation-delay:.06s;}
+  .slide.active .tag-row{animation-delay:.32s;}
+  .stagger>*{opacity:0;}
+  .slide.active .stagger>*{animation:fadeUp .5s ease both;}
+  .slide.active .stagger>*:nth-child(1){animation-delay:.14s;}
+  .slide.active .stagger>*:nth-child(2){animation-delay:.21s;}
+  .slide.active .stagger>*:nth-child(3){animation-delay:.28s;}
+  .slide.active .stagger>*:nth-child(4){animation-delay:.35s;}
+  .slide.active .stagger>*:nth-child(5){animation-delay:.42s;}
+  .slide.active .stagger>*:nth-child(6){animation-delay:.49s;}
+  .slide.active .stagger>*:nth-child(7){animation-delay:.56s;}
+  .eyebrow .dot{animation:pulseDot 2.6s ease-in-out infinite;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}}
+
+  /* ===== TITLE ===== */
+  .title-slide{justify-content:center;align-items:flex-start;overflow:hidden;}
+  .title-slide::after{content:"";position:absolute;top:-180px;right:-140px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(255,157,0,.26),transparent 70%);z-index:0;}
+  .title-slide::before{content:"";position:absolute;bottom:-220px;right:80px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(236,72,153,.2),transparent 70%);z-index:0;}
+  .title-slide>*{position:relative;z-index:1;}
+  .title-slide .logos{display:flex;align-items:center;gap:18px;margin-bottom:38px;}
+  .title-logo-img{height:40px;}
+  .title-logo-img.geopher-wm{height:52px;}
+  .closing-logo img.lg.geopher-wm{height:36px;}
+  .x-divider{color:var(--muted);font-size:22px;font-weight:300;}
+  .title-slide h1{font-size:58px;}
+  .title-slide .subtitle{max-width:470px;}
+  .title-meta{margin-top:42px;color:var(--muted);font-size:15px;}
+  .title-meta strong{color:var(--text);}
+  .hero-mascot{position:absolute;right:70px;bottom:60px;width:370px;z-index:2;animation:bob 5.5s ease-in-out infinite;}
+  .hero-mascot img{width:100%;height:auto;display:block;filter:drop-shadow(0 26px 34px rgba(255,120,0,.20));}
+  .hero-gopher{position:absolute;right:410px;bottom:0px;width:330px;z-index:1;animation:bob 6.2s ease-in-out infinite .5s;}
+  .float-chip{
+    position:absolute;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);
+    border-radius:15px;padding:11px 17px;font-weight:700;font-size:15px;color:var(--text);
+    box-shadow:0 16px 34px rgba(0,0,0,.09);white-space:nowrap;z-index:2;
+  }
+  .float-chip .icon-orb{width:30px;height:30px;font-size:14px;}
+  .fc1{right:30%;top:11%;--r:-4deg;animation:floaty 6.5s ease-in-out infinite;}
+  .fc2{right:7%;top:6%;--r:4deg;animation:floaty 7.4s ease-in-out infinite .4s;}
+  .fc3{right:34%;top:32%;--r:3deg;animation:floaty 7s ease-in-out infinite .7s;}
+  .fc4{right:22%;top:49%;--r:-3deg;animation:floaty 6.8s ease-in-out infinite .3s;}
+  .fc5{right:5%;top:37%;--r:4deg;animation:floaty 7.6s ease-in-out infinite .9s;}
+  .fc6{right:16%;top:21%;--r:-4deg;animation:floaty 7.2s ease-in-out infinite .6s;}
+  /* shorter screens: pull the chips back into the clear band above the title */
+  @media (max-height:1000px){
+    .fc1{right:520px;top:140px;}
+    .fc2{right:120px;top:84px;}
+    .fc3{right:390px;top:200px;}
+    .fc4{right:140px;top:248px;}
+    .fc5{right:60px;top:170px;}
+    .fc6{right:330px;top:62px;}
+  }
+
+  /* ===== AGENDA ===== */
+  .agenda-list{list-style:none;margin:34px 0 0 0;padding:0;display:flex;flex-direction:column;gap:12px;max-width:900px;}
+  .agenda-list li{
+    display:flex;align-items:center;gap:20px;padding:14px 22px;font-size:20px;font-weight:700;
+    background:var(--panel);border:1px solid var(--border);border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.04);
+    transition:transform .2s ease;
+  }
+  .agenda-list .icon-orb{width:46px;height:46px;font-size:22px;}
+  .agenda-list .agenda-sub{display:block;font-size:14px;font-weight:400;color:var(--muted);margin-top:3px;}
+  .agenda-list .badge{margin-left:auto;font-size:11px;padding:6px 11px;border-radius:999px;font-weight:800;letter-spacing:.05em;}
+  .badge.yowork{background:rgba(255,157,0,.14);color:var(--orange-2);}
+  .badge.geopher{background:rgba(236,72,153,.14);color:var(--pink);}
+  .agenda-peek{position:absolute;right:90px;bottom:24px;width:400px;z-index:0;filter:drop-shadow(0 24px 34px rgba(255,120,0,.16));animation:bob 6s ease-in-out infinite;}
+
+  /* ===== SECTION DIVIDER ===== */
+  .divider-slide{justify-content:center;overflow:hidden;}
+  .divider-slide .dotfield{
+    position:absolute;inset:0;background-image:radial-gradient(circle,var(--dot-color,#FF9D00) 2.5px,transparent 2.6px);
+    background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse 620px 440px at 84% 32%,black 0%,transparent 70%);
+    mask-image:radial-gradient(ellipse 620px 440px at 84% 32%,black 0%,transparent 70%);opacity:.3;z-index:0;
+  }
+  .geopher-slide .dotfield{--dot-color:#ec4899;}
+  .divider-slide>*:not(.dotfield){position:relative;z-index:1;}
+  .divider-slide h1{font-size:60px;}
+  .divider-slide .subtitle{font-size:20px;max-width:560px;}
+  .divider-row{display:flex;gap:40px;align-items:center;margin-top:28px;}
+  .divider-features{display:flex;flex-direction:column;gap:14px;flex:1;max-width:480px;}
+  .divider-features .chip{
+    display:flex;align-items:center;gap:14px;font-size:17px;font-weight:700;padding:16px 20px;border-radius:14px;
+    background:var(--panel);border:1px solid var(--border);box-shadow:0 6px 16px rgba(0,0,0,.04);
+  }
+  .divider-features .chip .icon-orb{width:40px;height:40px;font-size:18px;}
+  .divider-hero{flex:1;display:flex;justify-content:center;align-items:center;position:relative;}
+  .divider-hero img.product{max-width:100%;max-height:400px;border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.18);}
+  .divider-mascot{position:absolute;width:430px;z-index:2;animation:bob 5.5s ease-in-out infinite;}
+
+  /* ===== MOCK UI (for features without recordings) ===== */
+  .mock-col{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;min-width:0;}
+  .mock-note{font-size:14px;color:var(--muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;}
+  .mock-notif{
+    width:100%;max-width:700px;background:var(--panel);border:1px solid var(--border);border-radius:22px;
+    box-shadow:0 22px 54px rgba(0,0,0,.13);padding:28px 32px;position:relative;overflow:hidden;
+  }
+  .mock-notif::before{content:"";position:absolute;top:0;left:0;bottom:0;width:6px;background:var(--geopher-grad);}
+  .mock-notif .head{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+  .mock-notif .head img{width:40px;height:40px;border-radius:50%;}
+  .mock-notif .head b{font-size:18px;}
+  .mock-notif .head span{margin-left:auto;font-size:15px;color:var(--muted);}
+  .mock-notif .msg{font-size:22px;line-height:1.5;}
+  .mock-notif .msg b{color:var(--pink);}
+  .rank-move{display:flex;align-items:center;gap:16px;margin-top:18px;padding:16px 20px;border-radius:14px;background:var(--panel-2);font-weight:800;font-size:19px;}
+  .rank-move .down{color:#e5484d;}
+  .rank-move .up{color:var(--green);}
+  .rank-move .arrow{color:var(--muted);font-weight:400;}
+  .mock-digest{
+    width:100%;max-width:700px;background:var(--panel);border:1px solid var(--border);border-radius:22px;
+    box-shadow:0 22px 54px rgba(0,0,0,.13);overflow:hidden;
+  }
+  .mock-digest .dg-head{background:var(--geopher-grad);color:#fff;padding:20px 30px;display:flex;align-items:center;gap:14px;}
+  .mock-digest .dg-head img{width:40px;height:40px;border-radius:50%;background:#fff;}
+  .mock-digest .dg-head b{font-size:19px;}
+  .mock-digest .dg-head span{margin-left:auto;font-size:15px;opacity:.85;}
+  .dg-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:1px solid var(--border);}
+  .dg-stat{padding:22px 14px;text-align:center;border-right:1px solid var(--border);}
+  .dg-stat:last-child{border-right:none;}
+  .dg-stat b{display:block;font-family:"Montserrat",sans-serif;font-size:32px;font-weight:800;}
+  .dg-stat span{font-size:13.5px;color:var(--muted);font-weight:700;letter-spacing:.05em;text-transform:uppercase;}
+  .dg-stat .delta{font-size:15px;font-weight:800;}
+  .dg-stat .delta.up{color:var(--green);}
+  .dg-stat .delta.down{color:#e5484d;}
+  .dg-row{display:flex;align-items:center;gap:12px;padding:17px 30px;font-size:18px;border-bottom:1px solid var(--border);}
+  .dg-row:last-child{border-bottom:none;}
+  .dg-row b{font-weight:700;}
+  .dg-row .pill{margin-left:auto;font-size:13px;font-weight:800;padding:5px 13px;border-radius:99px;}
+  .dg-row .pill.up{background:rgba(40,199,111,.13);color:var(--green);}
+  .dg-row .pill.down{background:rgba(229,72,77,.12);color:#e5484d;}
+
+  /* ===== LIVE BADGE (Xendit prod slide) ===== */
+  .live-hero{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;min-width:0;}
+  .live-pill{
+    display:inline-flex;align-items:center;gap:14px;font-family:"Montserrat",sans-serif;
+    font-size:34px;font-weight:800;letter-spacing:.06em;color:#fff;
+    background:linear-gradient(135deg,#3ddc84,#28c76f);padding:20px 42px;border-radius:22px;
+    box-shadow:0 22px 54px rgba(40,199,111,.35);
+  }
+  .live-pill .beacon{width:16px;height:16px;border-radius:50%;background:#fff;animation:pulseDot 1.6s ease-in-out infinite;}
+  .env-flow{display:flex;align-items:center;gap:18px;font-family:"Montserrat",sans-serif;font-weight:800;font-size:17px;}
+  .env-flow .env{padding:13px 24px;border-radius:14px;background:var(--panel);border:1px solid var(--border);color:var(--muted);box-shadow:0 8px 20px rgba(0,0,0,.05);}
+  .env-flow .env.prod{background:var(--geopher-grad);color:#fff;border:none;box-shadow:0 14px 30px rgba(236,72,153,.30);}
+  .env-flow .env .sub{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;opacity:.75;margin-top:2px;}
+  .env-flow .fl-arrow{font-size:26px;color:var(--muted);}
+
+  /* ===== CLOSING ===== */
+  .closing-slide{justify-content:center;align-items:flex-start;overflow:hidden;}
+  .closing-slide::after{content:"";position:absolute;top:-180px;left:-160px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(236,72,153,.18),transparent 70%);z-index:0;}
+  .closing-slide::before{content:"";position:absolute;bottom:-240px;right:-160px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(255,157,0,.22),transparent 70%);z-index:0;}
+  .closing-slide>*{position:relative;z-index:1;}
+  .closing-slide h1{
+    font-size:64px;
+    background:linear-gradient(100deg,#FFB81C,#FF9D00,#FF6A00 55%,#ec4899);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  }
+  .closing-slide .confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
+  .closing-slide .confetti i{position:absolute;top:-26px;width:10px;height:15px;border-radius:2px;opacity:0;animation:conffall linear infinite;}
+  @keyframes conffall{
+    0%{transform:translate3d(0,-26px,0) rotate(0deg);opacity:0;}
+    7%{opacity:1;}
+    90%{opacity:1;}
+    100%{transform:translate3d(var(--dx,0),105vh,0) rotate(var(--rot,720deg));opacity:0;}
+  }
+  .closing-slide .sparkle{position:absolute;z-index:2;font-size:30px;animation:twinkle 2.2s ease-in-out infinite;}
+  @keyframes twinkle{0%,100%{opacity:.25;transform:scale(.75) rotate(-8deg);}50%{opacity:1;transform:scale(1.15) rotate(8deg);}}
+  .recap-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 22px;margin-top:30px;max-width:900px;}
+  .recap-card{display:flex;gap:14px;align-items:flex-start;background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:16px 18px;box-shadow:0 10px 26px rgba(0,0,0,.05);}
+  .recap-card .icon-orb{width:40px;height:40px;font-size:18px;margin-top:1px;}
+  .recap-card b{display:block;color:var(--text);font-weight:700;font-size:15px;margin-bottom:3px;}
+  .recap-card span{color:var(--muted);font-size:13.5px;line-height:1.45;}
+  .closing-mascot{position:absolute;right:40px;bottom:20px;width:450px;z-index:2;animation:bob 5s ease-in-out infinite;}
+  .closing-gopher{position:absolute;right:490px;bottom:20px;width:350px;z-index:1;animation:bob 5.6s ease-in-out infinite .4s;}
+  .closing-logo{margin-top:36px;display:flex;align-items:center;gap:14px;}
+  .closing-logo img.lg{height:28px;opacity:.9;}
+
+  /* ===== INTAKE ===== */
+  .intake-slide{overflow:hidden;}
+  .intake-slide::after{content:"";position:absolute;top:-160px;right:-140px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(255,157,0,.18),transparent 70%);z-index:0;}
+  .intake-row{display:flex;gap:56px;flex:1;min-height:0;align-items:center;position:relative;z-index:1;}
+  .intake-left{flex:0 0 40%;display:flex;flex-direction:column;justify-content:center;min-width:0;}
+  .intake-shot{flex:1 1 auto;display:flex;align-items:center;justify-content:center;min-width:0;}
+  .shot-frame{border:1px solid var(--border);border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 26px 64px rgba(0,0,0,.18);max-height:76vh;}
+  .shot-frame img{display:block;max-width:100%;max-height:76vh;width:auto;height:auto;}
+  .intake-path{margin-top:16px;font-size:15px;color:var(--muted);}
+  .intake-path b{color:var(--text);font-weight:700;}
+  .qr-block{display:flex;align-items:center;gap:22px;margin-top:28px;}
+  .qr-card{background:var(--yowork-grad);padding:6px;border-radius:20px;box-shadow:0 16px 34px rgba(255,138,0,.30);flex:none;}
+  .qr-inner{background:#fff;border-radius:15px;padding:14px;line-height:0;}
+  .qr-inner img{display:block;width:158px;height:158px;image-rendering:pixelated;}
+  .qr-text .qr-label{font-size:13px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--orange-2);margin-bottom:7px;}
+  .qr-text a{display:block;font-size:16px;font-weight:800;color:var(--text);text-decoration:none;margin-bottom:10px;word-break:break-all;}
+  .qr-text .intake-path{margin-top:0;}
+  .intake-note{margin-top:26px;font-size:17px;color:var(--muted);}
+  .intake-note b{color:var(--orange-2);font-weight:700;}
+
+  /* ===== NAV ===== */
+  .nav{position:fixed;bottom:22px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:16px;z-index:10;pointer-events:none;}
+  .nav>*{pointer-events:auto;}
+  .nav button{background:var(--panel);border:1px solid var(--border);color:var(--text);width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s;box-shadow:0 4px 12px rgba(0,0,0,.06);}
+  .nav button:hover:not(:disabled){background:var(--panel-2);transform:scale(1.06);}
+  .nav button:disabled{opacity:.35;cursor:default;}
+  .dots{display:flex;gap:8px;}
+  .dots span{width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .15s,transform .15s;}
+  .dots span.active{background:var(--orange);transform:scale(1.35);}
+  .counter{position:fixed;bottom:28px;right:36px;font-size:13px;color:var(--muted);z-index:10;font-variant-numeric:tabular-nums;}
+  .home-btn{
+    position:fixed;bottom:22px;right:96px;z-index:11;
+    background:var(--panel);border:1px solid var(--border);color:var(--text);
+    width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:17px;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s,transform .15s;box-shadow:0 4px 12px rgba(0,0,0,.06);
+  }
+  .home-btn:hover{background:var(--panel-2);transform:scale(1.06);}
+  .progress-bar{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,#FFB81C,#FF9D00,#FF6A00,#ec4899);z-index:12;transition:width .4s ease;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="ic-phone" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.6"/><path d="M10.8 5h2.4"/><path d="M12 18.4h.01"/></symbol>
+    <symbol id="ic-snapshot" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2.4"/><path d="M8 3v4M16 3v4M3.5 10.5h17"/><path d="M8 14.5h5M8 17.5h8"/></symbol>
+    <symbol id="ic-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 12a7.4 7.4 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7.4 7.4 0 0 0-2-1.2L14.6 3h-4l-.4 2.6a7.4 7.4 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5a7.4 7.4 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-.9a7.4 7.4 0 0 0 2 1.2l.4 2.6h4l.4-2.6a7.4 7.4 0 0 0 2-1.2l2.3.9 2-3.4-2-1.5c.07-.4.1-.8.1-1.2z"/></symbol>
+    <symbol id="ic-bell" viewBox="0 0 24 24"><path d="M18 9.5a6 6 0 0 0-12 0c0 6-2.5 7-2.5 7h17S18 15.5 18 9.5z"/><path d="M10 20a2.2 2.2 0 0 0 4 0"/></symbol>
+    <symbol id="ic-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.4"/><path d="m3.5 7 8.5 6 8.5-6"/></symbol>
+    <symbol id="ic-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.6"/><path d="M2.5 9.6h19"/><path d="M6 14.6h4.5"/></symbol>
+    <symbol id="ic-rocket" viewBox="0 0 24 24"><path d="M12 15.5c6-4 7.5-9 7.4-12.9-3.9-.1-8.9 1.4-12.9 7.4L4 12.5l3.5 3.5 4.5-.5z"/><circle cx="14.5" cy="9.5" r="1.8"/><path d="M6.5 14 3 21l7-3.5"/></symbol>
+    <symbol id="ic-question" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.3 9.4a2.8 2.8 0 0 1 5.4 1c0 1.9-2.7 2.4-2.7 4.1"/><path d="M12 17.6h.01"/></symbol>
+  </defs>
+</svg>
+
+<div class="progress-bar" id="progressBar"></div>
+<a class="home-link" href="../../">‹ All updates</a>
+<img class="brand-mark" src="../../yoyo-assets/yoyo-logo.webp" alt="YOYO">
+<div class="deck" id="deck">
+
+  <!-- 1. TITLE -->
+  <section class="slide title-slide active">
+    <div class="logos">
+      <img class="title-logo-img" src="../../yoyo-assets/yoyo-logo.webp" alt="YOYO">
+      <span class="x-divider">×</span>
+      <img class="title-logo-img geopher-wm" src="../../yoyo-assets/geopher-wordmark.png" alt="Geopher.ai">
+    </div>
+    <h1>YoWork Goes Mobile &amp;<br>Snapshots Move In-App</h1>
+    <p class="subtitle">Plus Geopher: competitor-overtake alerts, a weekly AI-visibility digest, and Xendit live on production.</p>
+    <div class="title-meta">All-Hands · July 16, 2026 &nbsp;·&nbsp; <strong>YOYO Holdings</strong></div>
+
+    <div class="float-chip fc1"><span class="icon-orb orange"><svg class="ic"><use href="#ic-phone"></use></svg></span>Mobile</div>
+    <div class="float-chip fc2"><span class="icon-orb orange"><svg class="ic"><use href="#ic-snapshot"></use></svg></span>Daily Snapshot</div>
+    <div class="float-chip fc3"><span class="icon-orb pink"><svg class="ic"><use href="#ic-bell"></use></svg></span>Overtake Alerts</div>
+    <div class="float-chip fc4"><span class="icon-orb orange"><svg class="ic"><use href="#ic-gear"></use></svg></span>Snapshot Settings</div>
+    <div class="float-chip fc5"><span class="icon-orb pink"><svg class="ic"><use href="#ic-mail"></use></svg></span>Weekly Digest</div>
+    <div class="float-chip fc6"><span class="icon-orb pink"><svg class="ic"><use href="#ic-card"></use></svg></span>Xendit Live</div>
+
+    <img class="hero-gopher" src="../../yoyo-assets/geopher-final.png" alt="Geopher mascot">
+    <div class="hero-mascot">
+      <img src="../../yoyo-assets/yoyo-3d-wave.png" alt="YOYO mascot">
+    </div>
+  </section>
+
+  <!-- 2. AGENDA -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>Agenda</div>
+    <h2>What's new</h2>
+    <ul class="agenda-list stagger">
+      <li><span class="icon-orb orange"><svg class="ic"><use href="#ic-phone"></use></svg></span><div>Mobile responsiveness<span class="agenda-sub">YoWork now works comfortably on your phone</span></div><span class="badge yowork">YOWORK</span></li>
+      <li><span class="icon-orb orange"><svg class="ic"><use href="#ic-snapshot"></use></svg></span><div>Daily Snapshot<span class="agenda-sub">Submit your daily snapshot natively in YoWork</span></div><span class="badge yowork">YOWORK</span></li>
+      <li><span class="icon-orb orange"><svg class="ic"><use href="#ic-gear"></use></svg></span><div>Daily Snapshot settings<span class="agenda-sub">Auto-drafted on a schedule — review &amp; approve</span></div><span class="badge yowork">YOWORK</span></li>
+      <li><span class="icon-orb pink"><svg class="ic"><use href="#ic-bell"></use></svg></span><div>Competitor overtake alerts<span class="agenda-sub">Know when a competitor passes you in the analysis</span></div><span class="badge geopher">GEOPHER</span></li>
+      <li><span class="icon-orb pink"><svg class="ic"><use href="#ic-mail"></use></svg></span><div>Weekly AI-visibility digest<span class="agenda-sub">Your performance summary, every week</span></div><span class="badge geopher">GEOPHER</span></li>
+      <li><span class="icon-orb pink"><svg class="ic"><use href="#ic-card"></use></svg></span><div>Xendit payments — live<span class="agenda-sub">Out of sandbox, live on production</span></div><span class="badge geopher">GEOPHER</span></li>
+    </ul>
+    <img class="agenda-peek" src="../../yoyo-assets/yoyo-3d-point.png" alt="">
+  </section>
+
+  <!-- 3. YOWORK DIVIDER -->
+  <section class="slide divider-slide">
+    <div class="dotfield"></div>
+    <div class="eyebrow"><span class="dot"></span>YoWork</div>
+    <h1>YoWork Updates</h1>
+    <p class="subtitle">Three updates this round: the whole platform now works on your phone, and daily snapshots move from Lark tables into YoWork — with the settings to run them your way.</p>
+    <div class="divider-row">
+      <div class="divider-features stagger">
+        <div class="chip"><span class="icon-orb orange"><svg class="ic"><use href="#ic-phone"></use></svg></span>Mobile responsiveness</div>
+        <div class="chip"><span class="icon-orb orange"><svg class="ic"><use href="#ic-snapshot"></use></svg></span>Daily Snapshot</div>
+        <div class="chip"><span class="icon-orb orange"><svg class="ic"><use href="#ic-gear"></use></svg></span>Daily Snapshot scheduling settings</div>
+      </div>
+      <div class="divider-hero">
+        <img class="divider-mascot" style="right:24px;bottom:0px;" src="../../yoyo-assets/yoyo-3d-thumbsup.png" alt="">
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. MOBILE RESPONSIVENESS -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>YoWork · Section 1</div>
+    <h2>Mobile Responsiveness</h2>
+    <p class="subtitle">YoWork now adapts to your phone — check tasks, approve, and sign without waiting to be back at a desk.</p>
+    <div class="content-row">
+      <div class="content-col wide">
+        <ul class="feature-list stagger">
+          <li><span class="bullet">1</span><div>The core screens are <b>reworked for small screens</b> — navigation, boards, and forms now fit a phone instead of forcing a desktop layout.</div></li>
+          <li><span class="bullet">2</span><div><b>E-signature works on mobile</b> — review a document and sign it right from your phone when a request comes in.</div></li>
+          <li><span class="bullet">3</span><div><b>No app to install</b> — it's the same YoWork URL, opened in your phone's browser.</div></li>
+        </ul>
+        <div class="tag-row"><span class="tag">Any device</span><span class="tag">Sign on the go</span><span class="tag">Same URL</span></div>
+      </div>
+      <div class="video-col">
+        <div class="phone-frame"><video controls preload="none" src="mobile-view.mp4"></video></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. DAILY SNAPSHOT -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>YoWork · Section 2</div>
+    <h2>Daily Snapshot</h2>
+    <p class="subtitle">The daily snapshot now lives inside YoWork — one native flow instead of separate Lark tables per team.</p>
+    <div class="content-row">
+      <div class="content-col wide">
+        <ul class="feature-list stagger">
+          <li><span class="bullet">1</span><div>Submit your daily snapshot <b>directly in YoWork</b> — no more hunting for your team's Lark table.</div></li>
+          <li><span class="bullet">2</span><div>It gathers your day's activity for you — <b>Lark chats and updates, meetings on your calendar, and your YoWork activity</b> — so the snapshot reflects what you actually did.</div></li>
+          <li><span class="bullet">3</span><div>Snapshots land in <b>one place per team</b>, making the day's progress easy for leads to review.</div></li>
+        </ul>
+        <div class="tag-row"><span class="tag">Native in YoWork</span><span class="tag">Lark chats &amp; updates</span><span class="tag">Calendar meetings</span><span class="tag">YoWork activity</span></div>
+      </div>
+      <div class="shot-solo stagger">
+        <div class="shot"><img src="daily-snapshot.png" alt="Daily Snapshot in YoWork — today's achievement drafted from tasks, meetings, and activity"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. DAILY SNAPSHOT SETTINGS -->
+  <section class="slide">
+    <div class="eyebrow"><span class="dot"></span>YoWork · Section 3</div>
+    <h2>Daily Snapshot Settings</h2>
+    <p class="subtitle">Under <b>Settings → Scheduling</b> — let YoWork draft your snapshot on a schedule, so you just review &amp; approve.</p>
+    <div class="content-row">
+      <div class="content-col">
+        <ul class="feature-list stagger">
+          <li><span class="bullet">1</span><div>Turn on <b>Generate Daily Snapshot</b> and it auto-drafts your snapshot from today's activity at the time you set.</div></li>
+          <li><span class="bullet">2</span><div>Pick the <b>time, timezone, and where you're notified</b> — in-app, Lark, or both — or hit <b>Run Now</b> anytime.</div></li>
+          <li><span class="bullet">3</span><div>When it runs, you get a nudge: <b>"Your daily snapshot is ready"</b> — open it, review, and approve.</div></li>
+        </ul>
+        <div class="tag-row"><span class="tag">Settings → Scheduling</span><span class="tag">Auto-drafted</span><span class="tag">Review &amp; approve</span></div>
+      </div>
+      <div class="shot-duo stagger">
+        <div class="shot"><img src="snapshot-schedule-1.png" alt="Generate Daily Snapshot schedule settings"></div>
+        <div class="shot"><img src="snapshot-schedule-2.png" alt="Notification: your daily snapshot is ready"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. GEOPHER DIVIDER -->
+  <section class="slide divider-slide geopher-slide">
+    <div class="dotfield"></div>
+    <div class="eyebrow geopher"><span class="dot"></span>Geopher</div>
+    <h1>Geopher Updates</h1>
+    <p class="subtitle">Geopher starts coming to you — alerts when a competitor overtakes you, a weekly performance digest, and payments now live on production.</p>
+    <div class="divider-row">
+      <div class="divider-features stagger">
+        <div class="chip"><span class="icon-orb pink"><svg class="ic"><use href="#ic-bell"></use></svg></span>Competitor overtake alerts</div>
+        <div class="chip"><span class="icon-orb pink"><svg class="ic"><use href="#ic-mail"></use></svg></span>Weekly AI-visibility digest</div>
+        <div class="chip"><span class="icon-orb pink"><svg class="ic"><use href="#ic-rocket"></use></svg></span>Xendit live on production</div>
+      </div>
+      <div class="divider-hero"><img class="product" src="../../yoyo-assets/geopher-website.png" alt="Geopher"></div>
+    </div>
+  </section>
+
+  <!-- 8. OVERTAKE ALERTS -->
+  <section class="slide geopher-slide">
+    <div class="eyebrow geopher"><span class="ava"><img src="../../yoyo-assets/geopher-badge-round.png" alt=""></span>Geopher · Notifications</div>
+    <h2>Competitor Overtake Alerts</h2>
+    <p class="subtitle">You shouldn't have to open the dashboard to find out you've been passed — Geopher tells you the moment it happens.</p>
+    <div class="content-row">
+      <div class="content-col wide">
+        <ul class="feature-list stagger">
+          <li><span class="bullet">1</span><div>Geopher <b>watches the competitive analysis for you</b> and sends a notification when a competitor overtakes your brand.</div></li>
+          <li><span class="bullet">2</span><div>The alert shows <b>who passed you and where</b>, so you can jump straight to the analysis and see why.</div></li>
+          <li><span class="bullet">3</span><div>Catch ranking shifts <b>the day they happen</b>, not weeks later in a report.</div></li>
+        </ul>
+        <div class="tag-row"><span class="tag">Automatic monitoring</span><span class="tag">Instant alert</span></div>
+      </div>
+      <div class="mock-col stagger">
+        <div class="mock-notif">
+          <div class="head"><img src="../../yoyo-assets/geopher-badge-round.png" alt=""><b>Geopher</b><span>just now</span></div>
+          <div class="msg"><b>Competitor overtake:</b> Brand B just passed your brand in share of voice.</div>
+          <div class="rank-move"><span>Your brand <span class="down">#2 → #3</span></span><span class="arrow">·</span><span>Brand B <span class="up">#3 → #2</span></span></div>
+        </div>
+        <div class="mock-note">Illustration — actual notification may differ</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. WEEKLY DIGEST -->
+  <section class="slide geopher-slide">
+    <div class="eyebrow geopher"><span class="ava"><img src="../../yoyo-assets/geopher-badge-round.png" alt=""></span>Geopher · Notifications</div>
+    <h2>Weekly AI-Visibility Digest</h2>
+    <p class="subtitle">A weekly summary of how your brand performed in AI visibility — delivered to you, no dashboard required.</p>
+    <div class="content-row">
+      <div class="content-col wide">
+        <ul class="feature-list stagger">
+          <li><span class="bullet">1</span><div>Every week, Geopher sends a <b>digest of your AI-visibility performance</b> — the week's numbers in one glance.</div></li>
+          <li><span class="bullet">2</span><div>See <b>what moved</b>: visibility score, mentions, and how you're tracking against competitors.</div></li>
+          <li><span class="bullet">3</span><div>Perfect for a <b>Monday check-in</b> — skim the digest, dig into the dashboard only when something changed.</div></li>
+        </ul>
+        <div class="tag-row"><span class="tag">Weekly cadence</span><span class="tag">Performance at a glance</span></div>
+      </div>
+      <div class="mock-col stagger">
+        <div class="mock-digest">
+          <div class="dg-head"><img src="../../yoyo-assets/geopher-badge-round.png" alt=""><b>Your weekly AI-visibility digest</b><span>Jul 6 – 12</span></div>
+          <div class="dg-stats">
+            <div class="dg-stat"><b>72</b><span>Visibility score</span><div class="delta up">▲ +4</div></div>
+            <div class="dg-stat"><b>318</b><span>Mentions</span><div class="delta up">▲ +12%</div></div>
+            <div class="dg-stat"><b>#2</b><span>Rank</span><div class="delta up">▲ from #3</div></div>
+          </div>
+          <div class="dg-row"><b>Brand B</b>&nbsp;narrowed the gap in share of voice<span class="pill down">watch</span></div>
+          <div class="dg-row">Strongest surface this week:&nbsp;<b>ChatGPT</b><span class="pill up">▲</span></div>
+        </div>
+        <div class="mock-note">Illustration — actual digest may differ</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. XENDIT LIVE -->
+  <section class="slide geopher-slide">
+    <div class="eyebrow geopher"><span class="ava"><img src="../../yoyo-assets/geopher-badge-round.png" alt=""></span>Geopher · Payments</div>
+    <h2>Xendit Payments — Now Live</h2>
+    <p class="subtitle">Last update we showed the Xendit integration in sandbox. It's now live on production — real customers, real payments.</p>
+    <div class="content-row">
+      <div class="content-col wide">
+        <ul class="feature-list stagger">
+          <li><span class="bullet">1</span><div>Xendit checkout is <b>live on production</b> — customers can purchase and change plans with real payments.</div></li>
+          <li><span class="bullet">2</span><div>Everything from the sandbox demo carried over: <b>hosted checkout, upgrades / downgrades, and in-app manage &amp; cancel</b>.</div></li>
+          <li><span class="bullet">3</span><div>Geopher can now <b>take revenue end-to-end</b> — from sign-up to paid plan without a manual step.</div></li>
+        </ul>
+        <div class="tag-row"><span class="tag">Live on prod</span><span class="tag">Real payments</span><span class="tag">Self-serve plans</span></div>
+      </div>
+      <div class="live-hero stagger">
+        <div class="env-flow">
+          <span class="env">Integration<span class="sub">June</span></span>
+          <span class="fl-arrow">→</span>
+          <span class="env">Sandbox<span class="sub">July 2 demo</span></span>
+          <span class="fl-arrow">→</span>
+          <span class="env prod">Production<span class="sub">Now</span></span>
+        </div>
+        <div class="live-pill"><span class="beacon"></span>LIVE</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. INTAKE / GET IN TOUCH -->
+  <section class="slide intake-slide">
+    <div class="intake-row">
+      <div class="intake-left">
+        <div class="eyebrow"><span class="dot"></span>We're listening</div>
+        <h2>Question, request, or bug?</h2>
+        <p class="subtitle">No jargon needed — tell us what's up in YoWork and let's talk it through.</p>
+        <div class="qr-block">
+          <div class="qr-card"><div class="qr-inner"><img src="../../yoyo-assets/qr-intake.png" alt="Scan to open the YoWork intake form"></div></div>
+          <div class="qr-text">
+            <div class="qr-label">Scan to submit</div>
+            <a href="https://ai.yoyo-holdings.com/work/intake">ai.yoyo-holdings.com/work/intake</a>
+            <div class="intake-path">In-app: <b>YoWork → Work → Report / Request</b></div>
+          </div>
+        </div>
+        <p class="intake-note">Or just reach out to the <b>Tech team</b> directly — don't hesitate! 🙌</p>
+      </div>
+      <div class="intake-shot">
+        <div class="shot-frame"><img src="../../yoyo-assets/yowork-intake-form.png" alt="YoWork — Report or request something"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. CLOSING -->
+  <section class="slide closing-slide">
+    <div class="confetti" id="confetti"></div>
+    <div class="eyebrow"><span class="dot"></span>Wrap-up</div>
+    <h1>Thank You! 🎉</h1>
+    <p class="subtitle">That's the all-hands round-up for YoWork and Geopher — thanks for your time!</p>
+    <div class="recap-grid stagger">
+      <div class="recap-card"><span class="icon-orb orange"><svg class="ic"><use href="#ic-phone"></use></svg></span><div><b>Mobile responsiveness</b><span>YoWork works comfortably on your phone</span></div></div>
+      <div class="recap-card"><span class="icon-orb orange"><svg class="ic"><use href="#ic-snapshot"></use></svg></span><div><b>Daily Snapshot</b><span>Submit your daily snapshot natively in YoWork</span></div></div>
+      <div class="recap-card"><span class="icon-orb orange"><svg class="ic"><use href="#ic-gear"></use></svg></span><div><b>Snapshot settings</b><span>Auto-drafted on your schedule — review &amp; approve</span></div></div>
+      <div class="recap-card"><span class="icon-orb pink"><svg class="ic"><use href="#ic-bell"></use></svg></span><div><b>Overtake alerts</b><span>Know the moment a competitor passes you</span></div></div>
+      <div class="recap-card"><span class="icon-orb pink"><svg class="ic"><use href="#ic-mail"></use></svg></span><div><b>Weekly digest</b><span>AI-visibility performance, every week</span></div></div>
+      <div class="recap-card"><span class="icon-orb pink"><svg class="ic"><use href="#ic-card"></use></svg></span><div><b>Xendit — live</b><span>Real payments on production</span></div></div>
+    </div>
+    <div class="closing-logo">
+      <img class="lg" src="../../yoyo-assets/yoyo-logo.webp" alt="YOYO">
+      <span class="x-divider">×</span>
+      <img class="lg geopher-wm" src="../../yoyo-assets/geopher-wordmark.png" alt="Geopher.ai">
+    </div>
+    <span class="sparkle" style="right:120px;bottom:470px;animation-delay:0s;">✨</span>
+    <span class="sparkle" style="right:520px;bottom:400px;font-size:22px;animation-delay:.5s;">✨</span>
+    <span class="sparkle" style="right:20px;bottom:330px;font-size:28px;animation-delay:1s;">⭐</span>
+    <span class="sparkle" style="right:440px;bottom:250px;font-size:20px;animation-delay:1.4s;">✨</span>
+    <span class="sparkle" style="right:300px;bottom:560px;font-size:24px;animation-delay:.8s;">⭐</span>
+    <img class="closing-gopher" src="../../yoyo-assets/geopher-final.png" alt="Geopher mascot">
+    <img class="closing-mascot" src="../../yoyo-assets/yoyo-3d-jump.png" alt="">
+  </section>
+
+</div>
+
+<button class="home-btn" id="homeBtn" aria-label="Back to first slide" title="Back to first slide">⌂</button>
+<div class="counter" id="counter">1 / 12</div>
+<div class="nav">
+  <button id="prevBtn" aria-label="Previous">‹</button>
+  <div class="dots" id="dots"></div>
+  <button id="nextBtn" aria-label="Next">›</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  const dotsEl = document.getElementById('dots');
+  const counterEl = document.getElementById('counter');
+  const progressBar = document.getElementById('progressBar');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('span');
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  }
+  function pauseAllVideos(){ document.querySelectorAll('video').forEach(v => v.pause()); }
+  function render(){
+    slides.forEach((s, i) => s.classList.toggle('active', i === current));
+    [...dotsEl.children].forEach((d, i) => d.classList.toggle('active', i === current));
+    counterEl.textContent = (current + 1) + ' / ' + total;
+    progressBar.style.width = ((current + 1) / total * 100) + '%';
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+  function goTo(i){ if (i < 0 || i >= total) return; pauseAllVideos(); current = i; render(); }
+  const h = parseInt((location.hash || '').replace('#',''), 10);
+  if (!isNaN(h) && h >= 1 && h <= total) current = h - 1;
+
+  // celebratory confetti on the closing slide
+  const conf = document.getElementById('confetti');
+  if (conf) {
+    const colors = ['#FF9D00','#FFB81C','#FF6A00','#ec4899','#8b5cf6','#28c76f'];
+    for (let i = 0; i < 60; i++) {
+      const p = document.createElement('i');
+      const dur = 4 + Math.random() * 4.5;
+      const scale = 0.6 + Math.random() * 0.9;
+      p.style.left = (Math.random() * 100) + '%';
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.animationDuration = dur + 's';
+      p.style.animationDelay = (-Math.random() * dur) + 's';
+      p.style.setProperty('--dx', (Math.random() * 160 - 80) + 'px');
+      p.style.setProperty('--rot', (360 + Math.random() * 900) + 'deg');
+      p.style.width = (10 * scale) + 'px';
+      p.style.height = (15 * scale) + 'px';
+      if (Math.random() > 0.55) p.style.borderRadius = '50%';
+      conf.appendChild(p);
+    }
+  }
+
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+  document.getElementById('homeBtn').addEventListener('click', () => goTo(0));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); goTo(current - 1); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
+  });
+  render();
+</script>
+</body>
+</html>
